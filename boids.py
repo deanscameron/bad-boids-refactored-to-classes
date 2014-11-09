@@ -18,6 +18,9 @@ start_x_vel_range = [0, 10.0]
 start_y_vel_range = [-20.0, 20.0]
 number_boids = 50 
 
+animation_frame_num = 50
+animation_time_interval = 50
+
 boids_start_x_pos=[random.uniform(*start_x_pos_range) for x in range(number_boids)]
 boids_start_y_pos=[random.uniform(*start_y_pos_range) for x in range(number_boids)]
 boid_start_x_velocities=[random.uniform(*start_x_vel_range) for x in range(number_boids)]
@@ -61,7 +64,7 @@ def animate(frame):
 
 
 anim = animation.FuncAnimation(figure, animate,
-                               frames=50, interval=50)
+                               frames = animation_frame_num, interval = animation_time_interval)
 
 if __name__ == "__main__":
     plt.show()
