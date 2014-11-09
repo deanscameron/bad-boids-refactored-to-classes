@@ -3,16 +3,25 @@ A deliberately bad implementation of [Boids](http://dl.acm.org/citation.cfm?doid
 for use as an exercise on refactoring.
 """
 
+import matplotlib
+matplotlib.use('TkAgg')
 from matplotlib import pyplot as plt
 from matplotlib import animation
 import random
 
+
 # Deliberately terrible code for teaching purposes
 
-boids_x=[random.uniform(-450,50.0) for x in range(50)]
-boids_y=[random.uniform(300.0,600.0) for x in range(50)]
-boid_x_velocities=[random.uniform(0,10.0) for x in range(50)]
-boid_y_velocities=[random.uniform(-20.0,20.0) for x in range(50)]
+start_x_pos_range = [-450, 50.0]
+start_y_pos_range = [300.0, 600.0]
+start_x_vel_range = [0, 10.0]
+start_y_vel_range = [-20.0, 20.0]
+number_boids = 50 
+
+boids_x=[random.uniform(*start_x_pos_range) for x in range(number_boids)]
+boids_y=[random.uniform(*start_y_pos_range) for x in range(number_boids)]
+boid_x_velocities=[random.uniform(*start_x_vel_range) for x in range(number_boids)]
+boid_y_velocities=[random.uniform(*start_y_vel_range) for x in range(number_boids)]
 boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
 
 def update_boids(boids):
