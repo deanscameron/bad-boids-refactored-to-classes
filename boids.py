@@ -28,30 +28,30 @@ boid_start_y_velocities=[random.uniform(*start_y_vel_range) for x in range(numbe
 boids=(boids_start_x_pos,boids_start_y_pos,boid_start_x_velocities,boid_start_y_velocities)
 
 def update_boids(boids):
-	xs,ys,xvs,yvs=boids
+	boids_x_positions,boids_y_positions,boids_x_velocities,boids_y_velocities=boids
 	# Fly towards the middle
-	for i in range(len(xs)):
-		for j in range(len(xs)):
-			xvs[i]=xvs[i]+(xs[j]-xs[i])*0.01/len(xs)
-	for i in range(len(xs)):
-		for j in range(len(xs)):
-			yvs[i]=yvs[i]+(ys[j]-ys[i])*0.01/len(xs)
+	for i in range(len(boids_x_positions)):
+		for j in range(len(boids_x_positions)):
+			boids_x_velocities[i]=boids_x_velocities[i]+(boids_x_positions[j]-boids_x_positions[i])*0.01/len(boids_x_positions)
+	for i in range(len(boids_x_positions)):
+		for j in range(len(boids_x_positions)):
+			boids_y_velocities[i]=boids_y_velocities[i]+(boids_y_positions[j]-boids_y_positions[i])*0.01/len(boids_x_positions)
 	# Fly away from nearby boids
-	for i in range(len(xs)):
-		for j in range(len(xs)):
-			if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < 100:
-				xvs[i]=xvs[i]+(xs[i]-xs[j])
-				yvs[i]=yvs[i]+(ys[i]-ys[j])
+	for i in range(len(boids_x_positions)):
+		for j in range(len(boids_x_positions)):
+			if (boids_x_positions[j]-boids_x_positions[i])**2 + (boids_y_positions[j]-boids_y_positions[i])**2 < 100:
+				boids_x_velocities[i]=boids_x_velocities[i]+(boids_x_positions[i]-boids_x_positions[j])
+				boids_y_velocities[i]=boids_y_velocities[i]+(boids_y_positions[i]-boids_y_positions[j])
 	# Try to match speed with nearby boids
-	for i in range(len(xs)):
-		for j in range(len(xs)):
-			if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < 10000:
-				xvs[i]=xvs[i]+(xvs[j]-xvs[i])*0.125/len(xs)
-				yvs[i]=yvs[i]+(yvs[j]-yvs[i])*0.125/len(xs)
+	for i in range(len(boids_x_positions)):
+		for j in range(len(boids_x_positions)):
+			if (boids_x_positions[j]-boids_x_positions[i])**2 + (boids_y_positions[j]-boids_y_positions[i])**2 < 10000:
+				boids_x_velocities[i]=boids_x_velocities[i]+(boids_x_velocities[j]-boids_x_velocities[i])*0.125/len(boids_x_positions)
+				boids_y_velocities[i]=boids_y_velocities[i]+(boids_y_velocities[j]-boids_y_velocities[i])*0.125/len(boids_x_positions)
 	# Move according to velocities
-	for i in range(len(xs)):
-		xs[i]=xs[i]+xvs[i]
-		ys[i]=ys[i]+yvs[i]
+	for i in range(len(boids_x_positions)):
+		boids_x_positions[i]=boids_x_positions[i]+boids_x_velocities[i]
+		boids_y_positions[i]=boids_y_positions[i]+boids_y_velocities[i]
 
 
 figure=plt.figure()
@@ -64,7 +64,8 @@ def animate(frame):
 
 
 anim = animation.FuncAnimation(figure, animate,
-                               frames = animation_frame_num, interval = animation_time_interval)
+                               frames = animation_frame_num, 
+							   interval = animation_time_interval)
 
 if __name__ == "__main__":
     plt.show()
