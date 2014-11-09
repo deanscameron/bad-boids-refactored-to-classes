@@ -10,25 +10,15 @@ from matplotlib import animation
 import random
 from math import hypot
 import config
+import yaml
 
-start_x_pos_range = [-450, 50.0]
-start_y_pos_range = [300.0, 600.0]
-start_x_vel_range = [0, 10.0]
-start_y_vel_range = [-20.0, 20.0]
-start_number_boids = 50 
+config=yaml.load(open("config.yml"))
 
-animation_frame_number = 50
-animation_time_interval = 50
-
-nearby_distance = 10
-match_speed_distance = 100
-
-velocity_scale_factor = 0.01
-velocity_match_scale_factor = 0.125
-
-plot_x_limits = [-500, 1500]
-plot_y_limits = [-500, 1500]
-
+start_x_pos_range = config['start_x_pos_range']
+start_y_pos_range = config['start_y_pos_range']
+start_x_vel_range = config['start_x_vel_range']
+start_y_vel_range = config['start_y_vel_range']
+start_number_boids = config['start_number_boids']
 
 boids_start_x_pos=[random.uniform(*start_x_pos_range) for x in range(start_number_boids)]
 boids_start_y_pos=[random.uniform(*start_y_pos_range) for x in range(start_number_boids)]
@@ -44,8 +34,8 @@ def update_velocity(position_1, position_2, scale_factor):
     velocity_step = (position_2 - position_1)*scale_factor
     return velocity_step
 
-def distance_check(x_position_1, x_position_2, y_position_1, y_position_2, range)
-    if distance((x_position_2 - x_position_1), (y_position_2 - y_position_1)) < range
+def distance_check(x_position_1, x_position_2, y_position_1, y_position_2, range):
+    if distance((x_position_2 - x_position_1), (y_position_2 - y_position_1)) < range:
 	    return True
 	
 def update_boids(boids):
