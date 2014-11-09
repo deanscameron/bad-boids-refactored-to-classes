@@ -27,6 +27,9 @@ match_speed_distance = 10000
 velocity_scale_factor = 0.01
 velocity_match_scale_factor = 0.125
 
+plot_x_limits = [-500, 1500]
+plot_y_limits = [-500, 1500]
+
 boids_start_x_pos=[random.uniform(*start_x_pos_range) for x in range(number_boids)]
 boids_start_y_pos=[random.uniform(*start_y_pos_range) for x in range(number_boids)]
 boid_start_x_velocities=[random.uniform(*start_x_vel_range) for x in range(number_boids)]
@@ -60,9 +63,9 @@ def update_boids(boids):
 		boids_y_positions[i]=boids_y_positions[i]+boids_y_velocities[i]
 
 
-figure=plt.figure()
-axes=plt.axes(xlim=(-500,1500), ylim=(-500,1500))
-scatter=axes.scatter(boids[0],boids[1])
+figure = plt.figure()
+axes = plt.axes(xlim = plot_x_limits, ylim = plot_y_limits)
+scatter = axes.scatter(boids[0],boids[1])
 
 def animate(frame):
    update_boids(boids)
