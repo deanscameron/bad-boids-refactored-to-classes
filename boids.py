@@ -21,6 +21,12 @@ number_boids = 50
 animation_frame_num = 50
 animation_time_interval = 50
 
+nearby_distance = 100
+match_speed_distance = 10000
+
+velocity_scale_factor = 0.01
+velocity_match_scale_factor = 0.125
+
 boids_start_x_pos=[random.uniform(*start_x_pos_range) for x in range(number_boids)]
 boids_start_y_pos=[random.uniform(*start_y_pos_range) for x in range(number_boids)]
 boid_start_x_velocities=[random.uniform(*start_x_vel_range) for x in range(number_boids)]
@@ -28,26 +34,26 @@ boid_start_y_velocities=[random.uniform(*start_y_vel_range) for x in range(numbe
 boids=(boids_start_x_pos,boids_start_y_pos,boid_start_x_velocities,boid_start_y_velocities)
 
 def update_boids(boids):
-	boids_x_positions,boids_y_positions,boids_x_velocities,boids_y_velocities=boids
+	boids_x_positions,boids_y_positions,boids_x_velocities,boids_y_velocities = boids
 	# Fly towards the middle
 	for i in range(len(boids_x_positions)):
 		for j in range(len(boids_x_positions)):
-			boids_x_velocities[i]=boids_x_velocities[i]+(boids_x_positions[j]-boids_x_positions[i])*0.01/len(boids_x_positions)
+			boids_x_velocities[i]=boids_x_velocities[i]+(boids_x_positions[j]-boids_x_positions[i])*velocity_scale_factor/len(boids_x_positions)
 	for i in range(len(boids_x_positions)):
 		for j in range(len(boids_x_positions)):
-			boids_y_velocities[i]=boids_y_velocities[i]+(boids_y_positions[j]-boids_y_positions[i])*0.01/len(boids_x_positions)
+			boids_y_velocities[i]=boids_y_velocities[i]+(boids_y_positions[j]-boids_y_positions[i])*velocity_scale_factor/len(boids_x_positions)
 	# Fly away from nearby boids
 	for i in range(len(boids_x_positions)):
 		for j in range(len(boids_x_positions)):
-			if (boids_x_positions[j]-boids_x_positions[i])**2 + (boids_y_positions[j]-boids_y_positions[i])**2 < 100:
+			if (boids_x_positions[j]-boids_x_positions[i])**2 + (boids_y_positions[j]-boids_y_positions[i])**2 < nearby_distance:
 				boids_x_velocities[i]=boids_x_velocities[i]+(boids_x_positions[i]-boids_x_positions[j])
 				boids_y_velocities[i]=boids_y_velocities[i]+(boids_y_positions[i]-boids_y_positions[j])
 	# Try to match speed with nearby boids
 	for i in range(len(boids_x_positions)):
 		for j in range(len(boids_x_positions)):
-			if (boids_x_positions[j]-boids_x_positions[i])**2 + (boids_y_positions[j]-boids_y_positions[i])**2 < 10000:
-				boids_x_velocities[i]=boids_x_velocities[i]+(boids_x_velocities[j]-boids_x_velocities[i])*0.125/len(boids_x_positions)
-				boids_y_velocities[i]=boids_y_velocities[i]+(boids_y_velocities[j]-boids_y_velocities[i])*0.125/len(boids_x_positions)
+			if (boids_x_positions[j]-boids_x_positions[i])**2 + (boids_y_positions[j]-boids_y_positions[i])**2 < match_speed_distance:
+				boids_x_velocities[i]=boids_x_velocities[i]+(boids_x_velocities[j]-boids_x_velocities[i])*velocity_match_scale_factor/len(boids_x_positions)
+				boids_y_velocities[i]=boids_y_velocities[i]+(boids_y_velocities[j]-boids_y_velocities[i])*velocity_match_scale_factor/len(boids_x_positions)
 	# Move according to velocities
 	for i in range(len(boids_x_positions)):
 		boids_x_positions[i]=boids_x_positions[i]+boids_x_velocities[i]
