@@ -18,11 +18,11 @@ start_x_vel_range = [0, 10.0]
 start_y_vel_range = [-20.0, 20.0]
 number_boids = 50 
 
-boids_x=[random.uniform(*start_x_pos_range) for x in range(number_boids)]
-boids_y=[random.uniform(*start_y_pos_range) for x in range(number_boids)]
-boid_x_velocities=[random.uniform(*start_x_vel_range) for x in range(number_boids)]
-boid_y_velocities=[random.uniform(*start_y_vel_range) for x in range(number_boids)]
-boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
+boids_start_x_pos=[random.uniform(*start_x_pos_range) for x in range(number_boids)]
+boids_start_y_pos=[random.uniform(*start_y_pos_range) for x in range(number_boids)]
+boid_start_x_velocities=[random.uniform(*start_x_vel_range) for x in range(number_boids)]
+boid_start_y_velocities=[random.uniform(*start_y_vel_range) for x in range(number_boids)]
+boids=(boids_start_x_pos,boids_start_y_pos,boid_start_x_velocities,boid_start_y_velocities)
 
 def update_boids(boids):
 	xs,ys,xvs,yvs=boids
