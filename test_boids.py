@@ -1,5 +1,5 @@
 from boids import update_boids
-from boids_functions import distance
+from boids_functions import distance, update_velocity, distance_check
 from nose.tools import assert_almost_equal, assert_equal
 import os
 import yaml
@@ -16,3 +16,8 @@ def test_bad_boids_regression():
 def test_distance():
     assert_equal(distance(3,4),5)
     assert_almost_equal(distance(-1,1), 1.41, delta=0.01)
+	
+def test_update_velocity():
+    assert_equal(update_velocity(5, 10, 1), 5)
+    assert_equal(update_velocity(5, -5, 0.1), -1)
+
