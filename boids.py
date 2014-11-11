@@ -32,68 +32,86 @@ match_speed_distance = config['match_speed_distance']
 #boids=(boids_start_x_pos,boids_start_y_pos,boid_start_x_velocities,boid_start_y_velocities)
 
 
-class boid(object):
+class Boid(object):
     def __init__(self, x_position, y_position, x_velocity, y_velocity):
         self.x_position = x_position
         self.y_position = y_position
-		self.x_velocity = x_velocity
-		self.y_velocity = y_velocity
-		
-class boids(object):
-    def random_boids(self, start_number_boids):
-        self.boids = [boid(random.uniform(*start_x_pos_range),
+        self.x_velocity = x_velocity
+        self.y_velocity = y_velocity
+        
+class Boids(object):
+    def __init__(self, number_boids=50):
+	    self.number_boids = number_boids
+	    self.random_boids()
+
+    def random_boids(self):
+        self.boids = [Boid(random.uniform(*start_x_pos_range),
                 random.uniform(*start_y_pos_range),
                 random.uniform(*start_x_vel_range),
-                random.uniform(*start_y_vel_range),self) for x in range(start_number_boids)]
-  
-    def fly_towards_middle():
-	    # Update the velocities of boids such that they fly towards the centre of the flock
-	    for boid_1 in self.boids:
-		    for boid_2 in self.boids:
-			    boid_1.x_velocity += update_velocity(boid_1.x_position, boid_2.x_position, (velocity_scale_factor/number_boids))
-			    boid_1.y_velocity += update_velocity(boid_1.y_position, boid_2.y_position, (velocity_scale_factor/number_boids))
+                random.uniform(*start_y_vel_range)) for x in range(self.number_boids)]
+		
+    def fly_towards_middle(self):
+        # Update the velocities of boids such that they fly towards the centre of the flock
+        for boid_1 in self.boids:
+            for boid_2 in self.boids:
+                boid_1.x_velocity += update_velocity(boid_1.x_position, boid_2.x_position, (velocity_scale_factor/self.number_boids))
+                boid_1.y_velocity += update_velocity(boid_1.y_position, boid_2.y_position, (velocity_scale_factor/self.number_boids))
 
-    def avoid_nearby_boids():	
+    def avoid_nearby_boids(self):   
         # Update the velocities of boids such that they fly away from nearby birds in the flock
-	    for boid_1 in self.boids:
-		    for boid_2 in self.boids:
-			    if distance_check(boid_1.x_position, boid_2.x_position, boid_1.y_position, boid_2.y_position, nearby_distance):
-				    boid_1.x_velocity += update_velocity(boid_2.x_position, boid_1.x_position, 1)
-				    boid_1.y_velocity += update_velocity(boid_2.y_position, boid_1.y_position, 1)
+        for boid_1 in self.boids:
+            for boid_2 in self.boids:
+                if distance_check(boid_1.x_position, boid_2.x_position, boid_1.y_position, boid_2.y_position, nearby_distance):
+                    boid_1.x_velocity += update_velocity(boid_2.x_position, boid_1.x_position, 1)
+                    boid_1.y_velocity += update_velocity(boid_2.y_position, boid_1.y_position, 1)
 
-    def match_velocities():
+    def match_velocities(self):
         # Update the velocities of boids such that they fly at the same speed as the rest of the flock
-	    for boid_1 in self.boids:
-		    for boid_2 in self.boids:
-			    if distance_check(boid_1.x_position, boid_2.x_position, boid_1.y_position, boid_2.y_position, match_speed_distance):
-				    boid_1.x_velocity += update_velocity(boid_1.x_velocity, boid_2.x_velocity, (velocity_match_scale_factor/number_boids))
-    				boid_1.y_velocity += update_velocity(boid_1.y_velocity, boid_2.y_velocity, (velocity_match_scale_factor/number_boids))	
+        for boid_1 in self.boids:
+            for boid_2 in self.boids:
+                if distance_check(boid_1.x_position, boid_2.x_position, boid_1.y_position, boid_2.y_position, match_speed_distance):
+                    boid_1.x_velocity += update_velocity(boid_1.x_velocity, boid_2.x_velocity, (velocity_match_scale_factor/self.number_boids))
+                    boid_1.y_velocity += update_velocity(boid_1.y_velocity, boid_2.y_velocity, (velocity_match_scale_factor/self.number_boids))  
 
-    def move_boids():
-	    # Boids fly according to their velocities
-	   for boid_1 in self.boids:
-		    boid_1.x_position += boid_1.x_velocity
-		    boid_2.y_position += boid_2.y_velocity
+    def move_boids(self):
+        # Boids fly according to their velocities
+        for boid_1 in self.boids:
+            boid_1.x_position += boid_1.x_velocity
+            boid_1.y_position += boid_1.y_velocity
 
-    def update_boids():
-        fly_towards_middle()
-        avoid_nearby_boids()
-        match_velocities()
-        move_boids()
-	
+    def update_boids(self):
+        self.fly_towards_middle()
+        self.avoid_nearby_boids()
+        self.match_velocities()
+        self.move_boids()
+    
+    def boids_x_vector(self):
+        v = []
+        for boid_1 in self.boids:
+            v.append(boid_1.x_position)
+        return v
+            
+    def boids_y_vector(self):
+        v = []
+        for boid_1 in self.boids:
+            v.append(boid_1.y_position)
+        return v
+    
+    
+boids = Boids()
 
 figure = plt.figure()
 axes = plt.axes(xlim = config['plot_x_limits'], ylim = config['plot_y_limits'])
-scatter = axes.scatter(boids[0],boids[1])
+scatter = axes.scatter(boids.boids_x_vector(), boids.boids_y_vector())
 
 def animate(frame):
-   update_boids(boids)
-   scatter.set_offsets(zip(boids[0],boids[1]))
+   boids.update_boids()
+   scatter.set_offsets(zip(boids.boids_x_vector(), boids.boids_y_vector()))
 
 
 anim = animation.FuncAnimation(figure, animate,
                                frames = config['animation_frame_number'], 
-							   interval = config['animation_time_interval'])
+                               interval = config['animation_time_interval'])
 
 if __name__ == "__main__":
     plt.show()
