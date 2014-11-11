@@ -3,14 +3,15 @@ Implementation of [Boids](http://dl.acm.org/citation.cfm?doid=37401.37406)
 for use as an exercise on refactoring.
 """
 
+
 import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib import pyplot as plt
 from matplotlib import animation
 import random
-from math import hypot
 import config
 import yaml
+from boids_functions import distance, update_velocity, distance_check
 
 config=yaml.load(open("config.yml"))
 
@@ -30,18 +31,6 @@ boids_start_y_pos=[random.uniform(*start_y_pos_range) for x in range(start_numbe
 boid_start_x_velocities=[random.uniform(*start_x_vel_range) for x in range(start_number_boids)]
 boid_start_y_velocities=[random.uniform(*start_y_vel_range) for x in range(start_number_boids)]
 boids=(boids_start_x_pos,boids_start_y_pos,boid_start_x_velocities,boid_start_y_velocities)
-
-
-def distance(position_1, position_2):
-    return hypot(position_1, position_2)
-
-def update_velocity(position_1, position_2, scale_factor):
-    velocity_step = (position_2 - position_1)*scale_factor
-    return velocity_step
-
-def distance_check(x_position_1, x_position_2, y_position_1, y_position_2, range):
-    if distance((x_position_2 - x_position_1), (y_position_2 - y_position_1)) < range:
-	    return True
 	
 def update_boids(boids):
 	boids_x_positions,boids_y_positions,boids_x_velocities,boids_y_velocities = boids
