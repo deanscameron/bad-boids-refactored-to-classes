@@ -20,10 +20,6 @@ start_y_pos_range = config['start_y_pos_range']
 start_x_vel_range = config['start_x_vel_range']
 start_y_vel_range = config['start_y_vel_range']
 start_number_boids = config['start_number_boids']
-velocity_scale_factor = config['velocity_scale_factor']
-velocity_match_scale_factor = config['velocity_match_scale_factor']
-nearby_distance = config['nearby_distance']
-match_speed_distance = config['match_speed_distance']
 
 
 boids_start_x_pos=[random.uniform(*start_x_pos_range) for x in range(start_number_boids)]
@@ -31,7 +27,6 @@ boids_start_y_pos=[random.uniform(*start_y_pos_range) for x in range(start_numbe
 boid_start_x_velocities=[random.uniform(*start_x_vel_range) for x in range(start_number_boids)]
 boid_start_y_velocities=[random.uniform(*start_y_vel_range) for x in range(start_number_boids)]
 boids=(boids_start_x_pos,boids_start_y_pos,boid_start_x_velocities,boid_start_y_velocities)
-
 
 			
 def update_boids(boids):
