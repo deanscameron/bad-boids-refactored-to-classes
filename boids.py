@@ -18,18 +18,13 @@ start_x_pos_range = config['start_x_pos_range']
 start_y_pos_range = config['start_y_pos_range']
 start_x_vel_range = config['start_x_vel_range']
 start_y_vel_range = config['start_y_vel_range']
-start_number_boids = config['start_number_boids']
+
 
 velocity_scale_factor = config['velocity_scale_factor']
 velocity_match_scale_factor = config['velocity_match_scale_factor']
 nearby_distance = config['nearby_distance']
 match_speed_distance = config['match_speed_distance']
 
-#boids_start_x_pos=[random.uniform(*start_x_pos_range) for x in range(start_number_boids)]
-#boids_start_y_pos=[random.uniform(*start_y_pos_range) for x in range(start_number_boids)]
-#boid_start_x_velocities=[random.uniform(*start_x_vel_range) for x in range(start_number_boids)]
-#boid_start_y_velocities=[random.uniform(*start_y_vel_range) for x in range(start_number_boids)]
-#boids=(boids_start_x_pos,boids_start_y_pos,boid_start_x_velocities,boid_start_y_velocities)
 
 
 class Boid(object):
@@ -40,22 +35,22 @@ class Boid(object):
         self.y_velocity = y_velocity
         
 class Boids(object):
-    def __init__(self, number_boids=50):
-	    self.number_boids = number_boids
+    def __init__(self, num_boids=config['number_boids']):
+	    self.num_boids = num_boids
 	    self.random_boids()
 
     def random_boids(self):
         self.boids = [Boid(random.uniform(*start_x_pos_range),
                 random.uniform(*start_y_pos_range),
                 random.uniform(*start_x_vel_range),
-                random.uniform(*start_y_vel_range)) for x in range(self.number_boids)]
+                random.uniform(*start_y_vel_range)) for x in range(self.num_boids)]
 		
     def fly_towards_middle(self):
         # Update the velocities of boids such that they fly towards the centre of the flock
         for boid_1 in self.boids:
             for boid_2 in self.boids:
-                boid_1.x_velocity += update_velocity(boid_1.x_position, boid_2.x_position, (velocity_scale_factor/self.number_boids))
-                boid_1.y_velocity += update_velocity(boid_1.y_position, boid_2.y_position, (velocity_scale_factor/self.number_boids))
+                boid_1.x_velocity += update_velocity(boid_1.x_position, boid_2.x_position, (velocity_scale_factor/self.num_boids))
+                boid_1.y_velocity += update_velocity(boid_1.y_position, boid_2.y_position, (velocity_scale_factor/self.num_boids))
 
     def avoid_nearby_boids(self):   
         # Update the velocities of boids such that they fly away from nearby birds in the flock
@@ -70,8 +65,8 @@ class Boids(object):
         for boid_1 in self.boids:
             for boid_2 in self.boids:
                 if distance_check(boid_1.x_position, boid_2.x_position, boid_1.y_position, boid_2.y_position, match_speed_distance):
-                    boid_1.x_velocity += update_velocity(boid_1.x_velocity, boid_2.x_velocity, (velocity_match_scale_factor/self.number_boids))
-                    boid_1.y_velocity += update_velocity(boid_1.y_velocity, boid_2.y_velocity, (velocity_match_scale_factor/self.number_boids))  
+                    boid_1.x_velocity += update_velocity(boid_1.x_velocity, boid_2.x_velocity, (velocity_match_scale_factor/self.num_boids))
+                    boid_1.y_velocity += update_velocity(boid_1.y_velocity, boid_2.y_velocity, (velocity_match_scale_factor/self.num_boids))  
 
     def move_boids(self):
         # Boids fly according to their velocities
