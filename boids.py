@@ -31,16 +31,22 @@ boids_start_y_pos=[random.uniform(*start_y_pos_range) for x in range(start_numbe
 boid_start_x_velocities=[random.uniform(*start_x_vel_range) for x in range(start_number_boids)]
 boid_start_y_velocities=[random.uniform(*start_y_vel_range) for x in range(start_number_boids)]
 boids=(boids_start_x_pos,boids_start_y_pos,boid_start_x_velocities,boid_start_y_velocities)
-	
-def update_boids(boids):
+
+
+def fly_towards_middle(boids):
 	boids_x_positions,boids_y_positions,boids_x_velocities,boids_y_velocities = boids
 	number_boids = len(boids_x_positions)
-	
 	# Update the velocities of boids such that they fly towards the centre of the flock
 	for i in range(number_boids):
 		for j in range(number_boids):
 			boids_x_velocities[i] += update_velocity(boids_x_positions[i], boids_x_positions[j], (velocity_scale_factor/number_boids))
 			boids_y_velocities[i] += update_velocity(boids_y_positions[i], boids_y_positions[j], (velocity_scale_factor/number_boids))
+
+def update_boids(boids):
+	boids_x_positions,boids_y_positions,boids_x_velocities,boids_y_velocities = boids
+	number_boids = len(boids_x_positions)
+	
+	fly_towards_middle(boids)
 	
 	# Update the velocities of boids such that they fly away from nearby birds in the flock
 	for i in range(number_boids):
