@@ -51,32 +51,34 @@ def avoid_nearby_birds(boids):
 			if distance_check(boids_x_positions[i], boids_x_positions[j], boids_y_positions[i], boids_y_positions[j], nearby_distance):
 				boids_x_velocities[i] += update_velocity(boids_x_positions[j], boids_x_positions[i], 1)
 				boids_y_velocities[i] += update_velocity(boids_y_positions[j], boids_y_positions[i], 1)
-			
-def update_boids(boids):
+
+def match_velocities(boids):
 	boids_x_positions,boids_y_positions,boids_x_velocities,boids_y_velocities = boids
-	number_boids = len(boids_x_positions)
-	
-	fly_towards_middle(boids)
-	avoid_nearby_birds(boids)
-	
-	# Update the velocities of boids such that they fly away from nearby birds in the flock
-	for i in range(number_boids):
-		for j in range(number_boids):
-			if distance_check(boids_x_positions[i], boids_x_positions[j], boids_y_positions[i], boids_y_positions[j], nearby_distance):
-				boids_x_velocities[i] += update_velocity(boids_x_positions[j], boids_x_positions[i], 1)
-				boids_y_velocities[i] += update_velocity(boids_y_positions[j], boids_y_positions[i], 1) 
-	
-	# Update the velocities of boids such that they fly at the same speed as the rest of the flock
+	number_boids = len(boids_x_positions)		
+    # Update the velocities of boids such that they fly at the same speed as the rest of the flock
 	for i in range(number_boids):
 		for j in range(number_boids):
 			if distance_check(boids_x_positions[i], boids_x_positions[j], boids_y_positions[i], boids_y_positions[j], match_speed_distance):
 				boids_x_velocities[i] += update_velocity(boids_x_velocities[i], boids_x_velocities[j], (velocity_match_scale_factor/number_boids))
-				boids_y_velocities[i] += update_velocity(boids_y_velocities[i], boids_y_velocities[j], (velocity_match_scale_factor/number_boids))
-	
+				boids_y_velocities[i] += update_velocity(boids_y_velocities[i], boids_y_velocities[j], (velocity_match_scale_factor/number_boids))	
+
+def move_boids(boids):
+	boids_x_positions,boids_y_positions,boids_x_velocities,boids_y_velocities = boids
+	number_boids = len(boids_x_positions)
 	# Boids fly according to their velocities
 	for i in range(number_boids):
 		boids_x_positions[i] += boids_x_velocities[i]
 		boids_y_positions[i] += boids_y_velocities[i]
+				
+def update_boids(boids):
+    boids_x_positions,boids_y_positions,boids_x_velocities,boids_y_velocities = boids
+    number_boids = len(boids_x_positions)
+	
+    fly_towards_middle(boids)
+    avoid_nearby_birds(boids)
+    match_velocities(boids)
+    move_boids(boids)
+	
 
 
 figure = plt.figure()
