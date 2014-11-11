@@ -20,4 +20,7 @@ def test_distance():
 def test_update_velocity():
     assert_equal(update_velocity(5, 10, 1), 5)
     assert_equal(update_velocity(5, -5, 0.1), -1)
+	
+def test_distance_check():
+    assert distance_check(1, 4, 6, 10, 5.001)
 
