@@ -1,5 +1,5 @@
 from boids import update_boids
-from boids_functions import distance, update_velocity, distance_check
+from boids_functions import distance, update_vel, dist_check
 from boids_functions import fly_towards_middle, avoid_nearby_boids, move_boids, match_velocities
 from nose.tools import assert_almost_equal, assert_equal
 import os
@@ -49,10 +49,10 @@ def test_distance():
     assert_equal(distance(3,4),5)
     assert_almost_equal(distance(-1,1), 1.41, delta=0.01)
 	
-def test_update_velocity():
-    assert_equal(update_velocity(5, 10, 1), 5)
-    assert_equal(update_velocity(5, -5, 0.1), -1)
+def test_update_vel():
+    assert_equal(update_vel(5, 10, 1), 5)
+    assert_equal(update_vel(5, -5, 0.1), -1)
 	
-def test_distance_check():
-    assert distance_check(1, 4, 6, 10, 5.001)
+def test_dist_check():
+    assert dist_check(1, 4, 6, 10, 5.001)
 
