@@ -51,8 +51,6 @@ def update_boids(boids):
 	for i in range(number_boids):
 		for j in range(number_boids):
 			boids_x_velocities[i] += update_velocity(boids_x_positions[i], boids_x_positions[j], (velocity_scale_factor/number_boids))
-	for i in range(number_boids):
-		for j in range(number_boids):
 			boids_y_velocities[i] += update_velocity(boids_y_positions[i], boids_y_positions[j], (velocity_scale_factor/number_boids))
 	
 	# Fly away from nearby boids
