@@ -11,7 +11,7 @@ nearby_distance: 10
 match_speed_distance: 100
 
 velocity_scale_factor: 0.01
-velocity_match_scale_factor: 0.125
+velocity_match_factor: 0.125
 
-plot_x_limits: [-500, 1500]
-plot_y_limits: [-500, 1500]
+x_limits: [-500, 1500]
+y_limits: [-500, 1500]
